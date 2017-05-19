@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+if [ "$#" -lt 2 ]; then
+    echo "Usage $(basename $0) charm-dir charm-uri"
+    exit 1
+fi
+
+RENDERED_CHARM_DIR="$1"
+CHARM_URI="$2"
+
+GIT_UPSTREAM_REPO="git@github.com:CanonicalLtd/basic-auth-service-charm" 
+GIT_UPSTREAM_REMOTE="upstream"
+
+# push the charm to the store and grab the returned version
+OUT=$(mktemp)
+charm push $RENDERED_CHARM_DIR $CHARM_URI | tee $OUT
+PUSHED_CHARM="$(cat $OUT | sed -n 's/^url: //p')"
+PUSHED_CHARM_REV=${PUSHED_CHARM##*-}
+rm $OUT
+
+REV_HASH=$(awk '{ print $NF; }' "$RENDERED_CHARM_DIR"/repo-info)
+
+# publish the charm
+charm set $PUSHED_CHARM revision=$REV_HASH
+charm grant $PUSHED_CHARM --acl read --set everyone
+charm release $PUSHED_CHARM --channel=edge
+
+# tag the repo with the charm revision
+if ! git remote | grep -q $GIT_UPSTREAM_REMOTE; then
+    git remote add $GIT_UPSTREAM $GIT_UPSTREAM_REPO
+fi
+
+GIT_TAG=charm-r${PUSHED_CHARM_REV}
+git tag $GIT_TAG $REV_HASH
+git push $GIT_UPSTREAM_REMOTE $GIT_TAG

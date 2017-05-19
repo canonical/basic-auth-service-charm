@@ -1,0 +1,16 @@
+name: basic-auth-service
+summary: HTTP basic-authorization backend service
+maintainer: Canonical Landscape Team <landscape-crew@lists.canonical.com>
+description: |
+  This service provides an endpoint for HTTP basic-authorization credentials
+  validation, and a REST API to manage them.
+subordinate: false
+tags:
+  - http
+  - basic-auth
+provides:
+  website:
+    interface: http
+requires:
+  database:
+    interface: pgsql

@@ -1,0 +1,8 @@
+includes:
+  - layer:basic
+  - layer:snap
+  - layer:nagios
+  - interface:http
+  - interface:pgsql
+  - interface:nrpe-external-master
+repo: https://github.com/CanonicalLtd/basic-auth-service-charm

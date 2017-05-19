@@ -1,0 +1,8 @@
+pause:
+  description: Pause the service.
+resume:
+  description: Resume the service.
+schema-upgrade:
+  description: Perform database schema migrations.
+upgrade:
+  description: Install the latest basic-auth-service snap embedded in the latest charm.
