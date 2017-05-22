@@ -75,6 +75,12 @@ def configure_basic_auth_service(pgsql):
     set_state(charm_state('configured'))
 
 
+@when('basic-auth-check.available')
+def basic_auth_check_configured(basic_auth_check):
+    """Configure the basic-auth-check relation."""
+    basic_auth_check.configure(APPLICATION_PORT)
+
+
 @when('nrpe-external-master.available')
 @when_not(charm_state('nrpe-initial-config'))
 def initial_nrpe_config(nagios=None):

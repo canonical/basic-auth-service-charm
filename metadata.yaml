@@ -13,6 +13,8 @@ tags:
 provides:
   website:
     interface: http
+  basic-auth-check:
+    interface: basic-auth-check
 requires:
   database:
     interface: pgsql

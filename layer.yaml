@@ -2,6 +2,7 @@ includes:
   - layer:basic
   - layer:snap
   - layer:nagios
+  - interface:basic-auth-check
   - interface:http
   - interface:pgsql
   - interface:nrpe-external-master
