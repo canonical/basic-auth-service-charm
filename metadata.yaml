@@ -5,6 +5,8 @@ description: |
   This service provides an endpoint for HTTP basic-authorization credentials
   validation, and a REST API to manage them.
 subordinate: false
+series:
+  - xenial
 tags:
   - http
   - basic-auth
