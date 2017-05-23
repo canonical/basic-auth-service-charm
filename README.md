@@ -1,10 +1,10 @@
-# Overview
+# Juju charm for basic-auth-service
 
 This charm deploys
 the [basic-auth-service](https://github.com/CanonicalLtd/basic-auth-service),
 which provides HTTP basic-authorization credentials validation and management.
 
-# Deployment
+## Deployment
 
 The charm should be deployed along with
 the [PostgreSQL charm](https://jujucharms.com/postgresql/), to provide the
@@ -15,7 +15,7 @@ juju deploy cs:postgresql
 juju add-relation basic-auth-service:database postgresql:db
 ```
 
-# Credentials setup
+## Credentials setup
 
 Once the application is deployed and related to the database, credentials for
 API access can be added with
@@ -28,7 +28,7 @@ The command prints out generated credentials for the user and can be run on any
 unit of the deployed application.
 
 
-# `basic-auth-check` relation
+## `basic-auth-check` relation
 
 The basic-auth-service can be related via `basic-auth-check` relation with
 services that need Basic-Auth credentials validation. This is done by:
