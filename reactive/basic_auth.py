@@ -76,6 +76,7 @@ def configure_basic_auth_service(pgsql):
 
 
 @when('basic-auth-check.available')
+@when_not('basic-auth-check.changed')
 def basic_auth_check_configured(basic_auth_check):
     """Configure the basic-auth-check relation."""
     basic_auth_check.configure(APPLICATION_PORT)
