@@ -48,6 +48,7 @@ def install():
     set_state(charm_state('installed'))
     # db migration should be applied once the service is configured
     set_state(charm_state('db-update'))
+    hookenv.status_set('maintenance', 'Waiting for database relation.')
 
 
 @when(charm_state('installed'), 'website.available')
