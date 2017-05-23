@@ -20,7 +20,7 @@ juju add-relation basic-auth-service:database postgresql:db
 Once the application is deployed and related to the database, credentials for
 API access can be added with
 
-```bash`
+```bash
 juju run --unit basic-auth-service/0 'sudo /snap/bin/basic-auth-service.manage-credentials add <user>
 ```
 
