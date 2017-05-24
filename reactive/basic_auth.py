@@ -77,7 +77,7 @@ def configure_basic_auth_service(pgsql):
 
 
 @when('basic-auth-check.available')
-@when_not('basic-auth-check.changed')
+@when_not('basic-auth-check.configured')
 def basic_auth_check_configured(basic_auth_check):
     """Configure the basic-auth-check relation."""
     basic_auth_check.configure(APPLICATION_PORT)
@@ -130,6 +130,7 @@ def perform_database_migrations(pgsql):
 
 
 @when_file_changed(SNAP_CONFIG_PATH)
+@when_not(charm_state('db-update'))
 def restart_service():
     hookenv.status_set(
         'maintenance', 'Restarting service: basic-auth-service.')
