@@ -96,6 +96,7 @@ def initial_nrpe_config(nagios=None):
 def update_nrpe_config(unused=None):
     # Override the default nagios shortname regex to allow periods, which we
     # need because our bin names contain them (e.g. 'snap.foo.daemon').
+    # See lp:1693296
     nrpe.Check.shortname_re = '[\.A-Za-z0-9-_]+$'
     hostname = nrpe.get_nagios_hostname()
     current_unit = nrpe.get_nagios_unit_name()
