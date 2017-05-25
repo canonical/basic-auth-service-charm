@@ -2,6 +2,7 @@ import glob
 import os
 import os.path
 import subprocess
+import yaml
 
 from charms.reactive import (
     when,
@@ -55,6 +56,19 @@ def install():
 def configure_website(website):
     """Configure reverse proxy to point to our application."""
     website.configure(port=APPLICATION_PORT)
+    # Configure haproxy backend
+    server_name = '{}-{}'.format(
+        hookenv.local_unit().replace('/', '-'), APPLICATION_PORT)
+    services = [
+        {'service_name': hookenv.service_name(),
+         'service_host': '0.0.0.0',
+         'service_port': APPLICATION_PORT,
+         'service_options': [
+             'mode http', 'balance leastconn', 'cookie SRVNAME insert'],
+         'servers': [
+             [server_name, hookenv.unit_private_ip(), APPLICATION_PORT,
+              'maxconn 100 cookie S{i} check']]}]
+    website.set_remote(services=yaml.dump(services))
 
 
 @when(charm_state('installed'), 'database.master.available')
