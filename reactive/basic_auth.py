@@ -33,6 +33,11 @@ SNAP_CONFIG_PATH = '/var/snap/basic-auth-service/current/config.yaml'
 
 APPLICATION_PORT = 8080
 
+# Override the default nagios shortname regex to allow periods, which we
+# need because our bin names contain them (e.g. 'snap.foo.daemon').
+# See lp:1693296
+nrpe.Check.shortname_re = '[\.A-Za-z0-9-_]+$'
+
 
 def charm_state(state):
     """Convenience to return a reactive state name for this charm."""
@@ -108,10 +113,6 @@ def initial_nrpe_config(nagios=None):
 @when_any('config.changed.nagios_context',
           'config.changed.nagios_servicegroups')
 def update_nrpe_config(unused=None):
-    # Override the default nagios shortname regex to allow periods, which we
-    # need because our bin names contain them (e.g. 'snap.foo.daemon').
-    # See lp:1693296
-    nrpe.Check.shortname_re = '[\.A-Za-z0-9-_]+$'
     hostname = nrpe.get_nagios_hostname()
     current_unit = nrpe.get_nagios_unit_name()
     nrpe_setup = nrpe.NRPE(hostname=hostname, primary=True)
