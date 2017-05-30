@@ -7,7 +7,7 @@ from charmhelpers.core import hookenv, host
 sys.path.extend(["lib", "."])
 
 from reactive.basic_auth import (
-    install_snap,
+    install,
     perform_database_migrations,
 )
 
@@ -32,10 +32,11 @@ def resume():
 
 def upgrade():
     """Upgrade basic-auths-service snap."""
-    install_snap()
+    install()
     # XXX Work-around a bug in the snap that restarts the service even
     # when disabled: disable it again.
     host.service_pause(SERVICE_JOB)
+    hookenv.status_set("maintenance", "Service upgraded and paused.")
 
 
 def schema_upgrade():
