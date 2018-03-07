@@ -67,6 +67,7 @@ def refresh_local_snap():
     # upgrade-charm hook won't pick up on a changed local snap file.
     hookenv.status_set('maintenance', 'Upgrading basic-auth-service snap.')
     install_local_snap()
+    hookenv.status_set('active', 'Snap installed.')
 
 
 @when(charm_state('installed'), 'website.available')
