@@ -4,6 +4,7 @@ import os.path
 import subprocess
 
 from charms.reactive import (
+    hook,
     when,
     when_not,
     when_any,
@@ -43,17 +44,29 @@ def charm_state(state):
     return 'basic-auth-service.{}'.format(state)
 
 
-@when_not(charm_state('installed'))
-def install():
-    hookenv.status_set('maintenance', 'Installing basic-auth-service snap.')
+def install_local_snap():
     charm_dir = os.environ['JUJU_CHARM_DIR']
     snap_path = os.path.join(charm_dir, SNAP_FILE_NAME)
     snap_file = glob.glob(snap_path)[0]
     snap._install_local(snap_file)
+
+
+@when_not(charm_state('installed'))
+def install():
+    hookenv.status_set('maintenance', 'Installing basic-auth-service snap.')
+    install_local_snap()
     set_state(charm_state('installed'))
     # db migration should be applied once the service is configured
     set_state(charm_state('db-update'))
     hookenv.status_set('maintenance', 'Waiting for database relation.')
+
+
+@hook('upgrade-charm')
+def refresh_local_snap():
+    # Re-install the snap, as the 'refresh' used in the snap layer's
+    # upgrade-charm hook won't pick up on a changed local snap file.
+    hookenv.status_set('maintenance', 'Upgrading basic-auth-service snap.')
+    install_local_snap()
 
 
 @when(charm_state('installed'), 'website.available')

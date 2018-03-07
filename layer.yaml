@@ -7,3 +7,6 @@ includes:
   - interface:pgsql
   - interface:nrpe-external-master
 repo: https://github.com/CanonicalLtd/basic-auth-service-charm
+options:
+    basic:
+        use_venv: true
