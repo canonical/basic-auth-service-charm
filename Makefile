@@ -14,12 +14,15 @@ build: ## Install build dependencies and build the charm
 	./dev/ubuntu-deps
 	$(MAKE) charm-build
 
+interfaces/interface-pgsql:
+	git clone --quiet git://git.launchpad.net/interface-pgsql interfaces/interface-pgsql
+	cd interfaces/interface-pgsql && git checkout --quiet --force v1.1.3
+
 .PHONY: charm-build
 charm-build: REV_HASH = $(shell git rev-parse HEAD)
-charm-build: export INTERFACE_PATH = interfaces
-charm-build: ## Build the charm
+charm-build: interfaces/interface-pgsql ## Build the charm
 	rm -rf $(CHARM_OUTPUT)
-	charm build -s $(CHARM_SERIES) -o $(CHARM_OUTPUT)
+	INTERFACE_PATH=interfaces charm build -s $(CHARM_SERIES) -o $(CHARM_OUTPUT)
 	echo "commit-sha-1: $(REV_HASH)" > $(RENDERED_CHARM_DIR)/repo-info
 
 .PHONY: charm-push
