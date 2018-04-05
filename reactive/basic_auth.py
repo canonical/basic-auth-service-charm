@@ -45,6 +45,9 @@ def charm_state(state):
 
 
 def install_local_snap():
+    # Ensure the core snap is installed first to work around
+    # https://bugs.launchpad.net/snappy/+bug/1761253.
+    snap.install('core')
     charm_dir = os.environ['JUJU_CHARM_DIR']
     snap_path = os.path.join(charm_dir, SNAP_FILE_NAME)
     snap_file = glob.glob(snap_path)[0]
