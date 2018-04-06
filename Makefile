@@ -22,6 +22,7 @@ interfaces/interface-pgsql:
 charm-build: REV_HASH = $(shell git rev-parse HEAD)
 charm-build: interfaces/interface-pgsql ## Build the charm
 	rm -rf $(CHARM_OUTPUT)
+	ls -1	basic-auth-service_*.snap >/dev/null
 	INTERFACE_PATH=interfaces charm build -s $(CHARM_SERIES) -o $(CHARM_OUTPUT)
 	echo "commit-sha-1: $(REV_HASH)" > $(RENDERED_CHARM_DIR)/repo-info
 
