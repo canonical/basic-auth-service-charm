@@ -1,10 +1,22 @@
 #!/usr/bin/env python3
 
+from os import path
 import sys
 import traceback
-from charmhelpers.core import hookenv, host
 
-sys.path.extend(["lib", "."])
+sys.path.extend([
+    'lib',
+    '.',
+    path.join(
+        path.dirname(__file__),
+        '..',
+        '..',
+        '.venv',
+        'lib',
+        'python3.5',
+        'site-packages')])
+
+from charmhelpers.core import hookenv, host
 
 from reactive.basic_auth import (
     install,
