@@ -1,6 +1,6 @@
 CHARM_NAME = basic-auth-service
 CHARM_OUTPUT = /tmp/charms
-CHARM_URI = cs:~landscape/$(CHARM_NAME)
+CHARM_URI ?= cs:~landscape/$(CHARM_NAME)
 
 
 .PHONY: help
